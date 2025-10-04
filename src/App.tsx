@@ -5,6 +5,7 @@ import Banner from './components/Banner.tsx'
 import Gallery from './components/Gallery.tsx'
 import Contact from './components/Contact.tsx'
 import imagesData from './data/images.ts'
+import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, scaleIn, fadeIn } from './utils/animations'
 
 export default function App() {
   const [search, setSearch] = useState('')
@@ -22,7 +23,7 @@ export default function App() {
       <main className="overflow-hidden">
         <Banner />
         <Gallery images={filtered} onOpen={(id: number) => setSelectedId(id)} selectedId={selectedId} setSelectedId={setSelectedId} />
-        <section id="about" className="relative bg-gray-50 dark:bg-gray-900">
+        <section id="about-us" className="relative bg-gray-50 dark:bg-gray-900">
           <div className="absolute left-0 right-0 h-24 bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 -top-24" />
           <div className="section-container py-20">
             <motion.div 
@@ -41,22 +42,39 @@ export default function App() {
                   Our gallery showcases works that capture the essence of expression through simplified forms, 
                   where each stroke tells a story.
                 </p>
-                <div className="grid md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto">
+                <motion.div 
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="grid md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto"
+                >
                   {[
                     { title: 'Curated Collection', value: '100+' },
                     { title: 'Featured Artists', value: '25+' },
                     { title: 'Years of Excellence', value: '5+' }
                   ].map(stat => (
-                    <div key={stat.title} className="p-6 rounded-xl bg-white dark:bg-gray-800 shadow-soft">
-                      <div className="text-[rgb(239,151,33)] text-3xl font-bold mb-2">{stat.value}</div>
+                    <motion.div
+                      key={stat.title}
+                      variants={scaleIn}
+                      className="p-6 rounded-xl bg-white dark:bg-gray-800 shadow-soft hover:shadow-lg transition-shadow duration-300"
+                    >
+                      <motion.div 
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        whileInView={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="text-[rgb(239,151,33)] text-3xl font-bold mb-2"
+                      >
+                        {stat.value}
+                      </motion.div>
                       <div className="text-gray-600 dark:text-gray-300">{stat.title}</div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
 
               {/* Artist Info */}
-              <div className="mt-32">
+              <div id="about-artist" className="mt-32">
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -81,22 +99,37 @@ export default function App() {
                         Their transition from education to full-time artistry has allowed them to explore new
                         dimensions in their work, bringing together classical techniques with contemporary vision.
                       </p>
-                      <blockquote className="border-l-4 border-[rgb(239,151,33)] pl-4 italic my-6">
+                      <motion.blockquote 
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ 
+                          duration: 0.8, 
+                          delay: 0.2,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                        className="border-l-4 border-[rgb(239,151,33)] pl-4 italic my-6"
+                      >
                         "Art is not just my passion; it's the language through which I communicate my deepest
                         thoughts and emotions. Every stroke is a word, every piece a story."
-                      </blockquote>
+                      </motion.blockquote>
                     </div>
-                    <div className="flex gap-4 text-sm">
-                      <div className="px-4 py-2 rounded-lg bg-[rgb(239,151,33)]/10 text-[rgb(239,151,33)]">
-                        Art Educator
-                      </div>
-                      <div className="px-4 py-2 rounded-lg bg-[rgb(239,151,33)]/10 text-[rgb(239,151,33)]">
-                        Professional Artist
-                      </div>
-                      <div className="px-4 py-2 rounded-lg bg-[rgb(239,151,33)]/10 text-[rgb(239,151,33)]">
-                        Minimalist Style
-                      </div>
-                    </div>
+                    <motion.div 
+                      variants={staggerContainer}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      className="flex gap-4 text-sm flex-wrap"
+                    >
+                      {['Art Educator', 'Professional Artist', 'Minimalist Style'].map((skill, index) => (
+                        <motion.div
+                          key={skill}
+                          variants={scaleIn}
+                          className="px-4 py-2 rounded-lg bg-[rgb(239,151,33)]/10 text-[rgb(239,151,33)] hover:bg-[rgb(239,151,33)]/20 transition-colors duration-300"
+                        >
+                          {skill}
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </motion.div>
                   
                   <motion.div
@@ -105,10 +138,27 @@ export default function App() {
                     transition={{ duration: 0.6 }}
                     className="relative"
                   >
-                    <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800">
-                      {/* Artist photo will go here - for now showing a placeholder */}
-                      <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                        Artist Photo Coming Soon
+                    <div className="relative p-6">
+                      {/* Decorative border elements */}
+                      <div className="absolute top-0 left-0 w-16 h-16 border-t-4 border-l-4 border-[rgb(239,151,33)]" />
+                      <div className="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-[rgb(239,151,33)]" />
+                      <div className="absolute bottom-0 left-0 w-16 h-16 border-b-4 border-l-4 border-[rgb(239,151,33)]" />
+                      <div className="absolute bottom-0 right-0 w-16 h-16 border-b-4 border-r-4 border-[rgb(239,151,33)]" />
+                      
+                      {/* Small accent circles at corners */}
+                      <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full bg-[rgb(239,151,33)]" />
+                      <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-[rgb(239,151,33)]" />
+                      <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full bg-[rgb(239,151,33)]" />
+                      <div className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-[rgb(239,151,33)]" />
+                      
+                      {/* Main image */}
+                      <div className="relative">
+                        <img 
+                          src="/artist-photo.png" 
+                          alt="Gallery Artist" 
+                          className="w-full h-auto object-contain"
+                          style={{ maxHeight: "600px" }}
+                        />
                       </div>
                     </div>
                     <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-[rgb(239,151,33)]/10 rounded-full -z-10" />
@@ -135,9 +185,21 @@ export default function App() {
                   Interested in our collection or want to discuss art? We'd love to hear from you.
                 </p>
               </div>
-              <div className="grid md:grid-cols-2 gap-10">
-                <div className="space-y-8 p-8 rounded-2xl bg-gray-50 dark:bg-gray-900">
-                  <div>
+              <motion.div 
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                className="grid md:grid-cols-2 gap-10"
+              >
+                <motion.div
+                  variants={fadeInLeft}
+                  className="space-y-8 p-8 rounded-2xl bg-gray-50 dark:bg-gray-900 hover:shadow-xl transition-shadow duration-300"
+                >
+                  <motion.div
+                    variants={fadeIn}
+                    className="space-y-4"
+                  >
                     <h3 className="text-xl font-semibold mb-2 text-[rgb(239,151,33)]">Visit Us</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Soninagar Housing Society,<br />
@@ -146,59 +208,74 @@ export default function App() {
                       Solapur - 413004,<br />
                       Maharashtra, INDIA
                     </p>
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div variants={fadeIn} className="space-y-4">
                     <h3 className="text-xl font-semibold mb-2 text-[rgb(239,151,33)]">Opening Hours</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Monday - Saturday<br />
                       10:30 AM - 5:30 PM<br />
                       Sunday: Closed
                     </p>
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div variants={fadeIn} className="space-y-4">
                     <h3 className="text-xl font-semibold mb-2 text-[rgb(239,151,33)]">Contact</h3>
                     <p className="text-gray-600 dark:text-gray-300">
                       Phone: +91 90968 45274<br />
                       Email: info@onestrokegallery.com
                     </p>
-                  </div>
-                </div>
-                <form className="space-y-6 p-8 rounded-2xl bg-white dark:bg-gray-800 shadow-soft">
-                  <div>
+                  </motion.div>
+                </motion.div>
+                <motion.form 
+                  variants={fadeInRight}
+                  className="space-y-6 p-8 rounded-2xl bg-white dark:bg-gray-800 shadow-soft hover:shadow-xl transition-all duration-300"
+                >
+                  <motion.div
+                    variants={fadeIn}
+                    className="space-y-4"
+                  >
                     <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">Name</label>
-                    <input
+                    <motion.input
+                      whileFocus={{ scale: 1.01 }}
+                      transition={{ duration: 0.2 }}
                       type="text"
                       id="name"
                       className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-[rgb(239,151,33)] focus:border-transparent"
                       placeholder="Your name"
                     />
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div variants={fadeIn} className="space-y-4">
                     <label htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">Email</label>
-                    <input
+                    <motion.input
+                      whileFocus={{ scale: 1.01 }}
+                      transition={{ duration: 0.2 }}
                       type="email"
                       id="email"
                       className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-[rgb(239,151,33)] focus:border-transparent"
                       placeholder="your@email.com"
                     />
-                  </div>
-                  <div>
+                  </motion.div>
+                  <motion.div variants={fadeIn} className="space-y-4">
                     <label htmlFor="message" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">Message</label>
-                    <textarea
+                    <motion.textarea
+                      whileFocus={{ scale: 1.01 }}
+                      transition={{ duration: 0.2 }}
                       id="message"
                       rows={4}
                       className="w-full px-4 py-3 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-[rgb(239,151,33)] focus:border-transparent"
                       placeholder="Your message..."
                     />
-                  </div>
-                  <button
+                  </motion.div>
+                  <motion.button
+                    variants={fadeIn}
                     type="submit"
                     className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-[rgb(239,151,33)] to-amber-500 text-white font-medium hover:from-[rgb(239,151,33)] hover:to-amber-600 transition-all duration-300"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
                     Send Message
-                  </button>
-                </form>
-              </div>
+                  </motion.button>
+                </motion.form>
+              </motion.div>
             </motion.div>
           </div>
         </section>

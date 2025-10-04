@@ -21,7 +21,9 @@ export default function Gallery({ images, onOpen, selectedId, setSelectedId }: P
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-4">Featured Artworks</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-[rgb(239,151,33)] to-amber-500 bg-clip-text text-transparent">
+            Featured Artworks
+          </h2>
           <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Explore our collection of unique artworks, each piece carefully crafted to tell its own story.
           </p>
